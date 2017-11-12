@@ -1,0 +1,39 @@
+# System HASS Module
+#
+# Provides local system monitoring and info.
+
+sensor:
+
+  - platform: command_line
+    name: CPU Temp
+    command: "/bin/cat /sys/class/thermal/thermal_zone0/temp"
+    unit_of_measurement: "ºC"
+    value_template: '{{ value | multiply(0.001) }}'
+
+  - platform: systemmonitor
+    resources:
+    - type: disk_use_percent
+      arg: /
+    - type: memory_free
+    - type: memory_use_percent
+    - type: processor_use
+    - type: since_last_boot
+    - type: since_last_boot
+    - type: load_1m
+    - type: load_5m
+    - type: load_15m
+    #- type: network_in
+    #  arg: eth0
+    #- type: network_out
+    #  arg: eth0
+
+switch:
+
+  - platform: command_line
+    switches:
+      pi_display:
+        friendly_name: Pi Display
+        command_on: "DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority xset dpms force on"
+        command_off: "DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority xset dpms force off"
+        command_state: "DISPLAY=:0 XAUTHORITY=/home/pi/.Xauthority xset -q | grep 'Monitor is' | grep 'On' > /dev/null"
+

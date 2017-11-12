@@ -1,0 +1,137 @@
+default_view:
+  view: true
+  icon: mdi:home
+  entities:
+  - group.bedroom
+  - group.kitchen
+  - group.basement
+  - group.mias_room
+  - group.security
+  - group.thermostat
+  - group.garage
+  - group.alarm
+  - group.office
+  - group.utility_room
+  - group.brewing
+  - camera.backyard
+  - camera.front_yard
+  - camera.garage
+  - camera.living_room
+  - camera.mias_room
+
+lighting:
+  name: Lights
+  view: true
+  entities:
+    - light.bedroom
+    - light.bedroom_led
+    - light.kitchen
+    - light.kitchen_sink
+    - light.living_room_1
+    - light.living_room_2
+    - light.living_room_3
+    - light.office_led
+    - light.tv_room_1
+    - light.tv_room_2
+    - light.tims_room
+
+security:
+  name: Security
+  view: yes
+  entities:
+    - group.alarm
+    - alarm_control_panel.simplisafe
+    - camera.backyard
+    - camera.front_yard
+    - camera.garage
+    - camera.living_room
+    - camera.mias_room
+
+environmental:
+  name: Environment
+  view: yes
+  entities:
+    - group.environment
+
+brewing:
+  name: Brewing
+  view: yes
+  entities:
+   - group.fermentation
+
+thermostat:
+    - binary_sensor.dining_room_thermostat_fan
+    - sensor.dining_room_thermostat_hvac_state
+    - sensor.dining_room_thermostat_operation_mode
+    - sensor.dining_room_thermostat_target
+    - sensor.dining_room_thermostat_temperature
+
+basement:
+    - sensor.basement_temperature
+    - sensor.basement_humidity
+    - sensor.basement_motion
+
+bedroom:
+    - light.bedroom
+    - light.bedroom_led
+    - sensor.bedroom_temperature
+    - sensor.bedroom_humidity
+    - switch.salt_lamp
+    - switch.bedroom_fan
+
+environment:
+    - sensor.bedroom_temperature
+    - sensor.bedroom_humidity
+    - sensor.dining_room_thermostat_temperature
+    - sensor.dining_room_thermostat_humidity
+    - sensor.garage_temperature
+    - sensor.garage_humidity
+    - sensor.mias_room_temperature
+    - sensor.mias_room_humidity
+    - sensor.office_temperature
+    - sensor.office_humidity
+    - sensor.utility_room_temperature
+    - sensor.utility_room_humidity
+    - sensor.basement_temperature
+    - sensor.basement_humidity
+
+lights:
+    - light.bedroom
+    - light.bedroom_led
+    - light.kitchen
+    - light.kitchen_sink
+    - light.living_room_1
+    - light.living_room_2
+    - light.living_room_3
+    - light.office_led
+    - light.tv_room_1
+    - light.tv_room_2
+    - light.tims_room
+    - switch.outdoor_light
+
+fermentation:
+    - sensor.fermentation_temperature
+
+garage:
+    - cover.garage
+    - sensor.garage_door
+    - sensor.garage_temperature
+    - sensor.garage_humidity
+
+mias_room:
+    - sensor.mias_room_temperature
+    - sensor.mias_room_humidity
+    - switch.mias_room
+
+utility_room:
+   - sensor.utility_room_temperature
+   - sensor.utility_room_humidity
+   - sensor.utility_room_pir
+
+office:
+  - sensor.office_temperature
+  - sensor.office_humidity
+  - sensor.office_pir
+
+alarm:
+    - alarm_control_panel.simplisafe

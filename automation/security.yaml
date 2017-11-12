@@ -1,0 +1,23 @@
+#Security Automation
+- alias: Alarm State
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.simplisafe
+    to: 'disarmed'
+  action:
+    service: notify.notify
+    data_template:
+      message: >
+        {{ trigger.to_state.attributes.friendly_name }} Disarmed
+
+- alias: Alarm State 2
+  trigger:
+    platform: state
+    entity_id: alarm_control_panel.simplisafe
+    to: 'armed'
+  action:
+    service: notify.notify
+    data_template:
+      message: >
+        {{ trigger.to_state.attributes.friendly_name }} Armed
+

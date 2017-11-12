@@ -1,0 +1,1 @@
+sudo certbot certonly --manual --preferred-challenges http -d thak.duckdns.org

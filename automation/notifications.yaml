@@ -1,0 +1,36 @@
+#Notifications Automation
+- alias: Notify When Garage Is Open After 10pm
+  trigger:
+    platform: state
+    entity_id: sensor.garage_door
+    to: 'open'
+  condition:
+    condition: time
+    after: '22:00:00'
+    before: '23:59:59'
+  action:
+    service: notify.notify
+    data:
+      message: "Garage Door is still open."
+
+- alias: Notify When Garage Is Open For 30 minutes
+  trigger:
+    platform: state
+    entity_id: sensor.garage_door
+    to: 'open'
+    for:
+      minutes: 30
+  action:
+    service: notify.notify
+    data:
+      message: "Garage Door has been open 30 minutes."
+
+- alias: Notify When Home-Assistant Has An Update
+  trigger:
+  - platform: state
+    entity_id: updater.updater
+  action:
+    service: notify.notify
+    data:
+      message: "Home-Assistant has an update."
+

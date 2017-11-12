@@ -1,0 +1,295 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret latitude
+  longitude: !secret longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 714
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Chicago
+
+# Show links to resources in log and frontend
+# introduction:
+
+# Enables the frontend
+frontend:
+# Enables configuration panel
+config:
+
+http:
+  # Uncomment this to add a password (recommended!)
+   api_password: !secret http_password
+   ssl_certificate: !secret ssl_certificate
+   ssl_key: !secret ssl_key
+   base_url: !secret base_url
+
+# Checks for available updates
+updater:
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time.
+history:
+
+# View all events in a logbook
+logbook:
+
+# Track the sun
+sun:
+
+map:
+
+# Weather Prediction
+sensor:
+  platform: yr
+
+# Text to speech
+tts:
+  platform: google
+
+# influxdb:
+#    host: 127.0.0.1
+
+notify:
+    platform: pushbullet
+    api_key: !secret pb_api
+#  - name: sendsms
+#    platform: twilio_sms
+#    account_sid: !secret twilio_api
+#    auth_token: !secret twilio_token
+#    from_number: !secret twilio_number
+
+
+ffmpeg:
+   ffmpeg_bin: /usr/bin/ffmpeg
+
+mqtt:
+  broker: 192.168.10.153
+  port: 1883
+  keepalive: 60
+  client_id: home-assistant-1
+#  username: !secret mqtt_id
+#  password: !secret mqtt_pw
+#  discovery: true
+
+sensor 4:
+  - platform: mqtt
+    state_topic: "home-assistant/cover/main"
+    name: Garage Door
+
+sensor 5:
+  - platform: mqtt
+    state_topic: "avon/MiasRoom/temperature"
+    qos: 0
+    unit_of_measurement: "ºF"
+    name: Mia's Room Temperature
+
+  - platform: mqtt
+    name: Mia's Room Humidity
+    state_topic: "avon/MiasRoom/humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+  - platform: mqtt
+    name: Mia's Room Humidity
+    state_topic: "avon/MiasRoom/motion"
+    value_template: '{{ value_json.motion }}'
+
+sensor 7:
+  - platform: crimereports
+    name: Como Crime
+    radius: 1609
+
+sensor 8:
+  - platform: mqtt
+    state_topic: "devices/33c9baef/temperature/temperature"
+    qos: 0
+    unit_of_measurement: "ºF"
+    name: Garage Temperature
+
+sensor 9:
+    platform: mqtt
+    name: Garage Humidity
+    state_topic: "devices/33c9baef/humidity/humidity"
+    qos: 0
+    unit_of_measurement: "%"
+
+cover:
+  - platform: mqtt
+    name: "Garage"
+    state_topic: "home-assistant/cover/main"
+    command_topic: "home-assistant/cover/main/set"
+
+# Nest
+nest:
+  client_id: !secret nest_id
+  client_secret: !secret nest_secret
+
+# Dark Sky
+# sensor 3:
+#   platform: darksky
+#   api_key: !secret ds_api
+#   monitored_conditions:
+#     - precip_type
+#     - precip_probability
+#     - temperature
+#     - dew_point
+#     - wind_speed
+#     - humidity
+#     - pressure
+#     - ozone
+
+
+# Garage Camera
+camera 3:
+  - platform: ffmpeg
+    name: Garage
+    input: !secret amcrest_rstp
+
+# Mia's Room
+camera 6:
+  - platform: ffmpeg
+    name: Mia's Room
+    input: !secret samsung_rstp
+
+switch:
+  platform: rpi_rf
+  gpio: 17
+  switches:
+    Office Outlet:
+      pulselength: 178
+      protocol: 1
+      code_on: 1062147
+      code_off: 1062156
+    Mia's Room:
+      protocol: 1
+      pulselength: 178
+      code_on: 1056003
+      code_off: 1056012
+    Bedroom Fan:
+      protocol: 1
+      pulselength: 178
+      code_on: 1054467
+      code_off: 1054476
+    Salt Lamp:
+      protocol: 1
+      pulselength: 178
+      code_on: 1054003
+      code_off: 1054012
+
+#emulated_hue:
+#  type: alexa
+#  # Google Home does not work on different ports.
+#  listen_port: 8300
+
+alarm_control_panel:
+  platform: simplisafe
+  username: !secret simplisafe_id
+  password: !secret simplisafe_pw
+
+light:  
+  - platform: mqtt_json  
+    name: "Bedroom LED"  
+    state_topic: "bruh/sensornode1"  
+    command_topic: "bruh/sensornode1/set"  
+    brightness: true  
+    flash: true  
+    rgb: true  
+    optimistic: false  
+    qos: 0  
+
+light 2:  
+  - platform: mqtt_json  
+    name: "Office LED"  
+    state_topic: "avon/sensornode2"  
+    command_topic: "avon/sensornode2/set"  
+    brightness: true  
+    flash: true  
+    rgb: true  
+    optimistic: false  
+    qos: 0  
+
+sensor 10:  
+  - platform: mqtt  
+    state_topic: "bruh/sensornode1"  
+    name: "Bedroom Humidity"  
+    unit_of_measurement: "%"  
+    value_template: '{{ value_json.humidity | round(1) }}'  
+
+  - platform: mqtt  
+    state_topic: "bruh/sensornode1"  
+    name: "SN1 LDR"
+    ##This sensor is not calibrated to actual LUX. Rather, this a map of the input voltage ranging from 0 - 1023.
+    unit_of_measurement: "LUX"  
+    value_template: '{{ value_json.ldr }}'  
+
+  - platform: mqtt  
+    state_topic: "bruh/sensornode1"  
+    name: "Bedroom PIR"  
+    value_template: '{{ value_json.motion }}'  
+
+  - platform: mqtt  
+    state_topic: "bruh/sensornode1"  
+    name: "Bedroom Temperature"  
+    unit_of_measurement: "°F"  
+    value_template: '{{ value_json.temperature | round(1) }}'  
+
+sensor 11:  
+  - platform: mqtt  
+    state_topic: "avon/office/humidity"  
+    name: "Office Humidity"  
+    unit_of_measurement: "%"  
+    value_template: '{{ value_json.humidity | round(1) }}'  
+
+  - platform: mqtt  
+    state_topic: "avon/office/motion"  
+    name: "Office PIR"  
+    value_template: '{{ value_json.motion }}'  
+
+  - platform: mqtt  
+    state_topic: "avon/office/temperature"  
+    name: "Office Temperature"  
+    unit_of_measurement: "°F"  
+    value_template: '{{ value_json.temperature | round(1) }}'  
+
+sensor 13:  
+  - platform: mqtt  
+    state_topic: "avon/basement/humidity"  
+    name: "Basement Humidity"  
+    unit_of_measurement: "%"  
+    value_template: '{{ value_json.humidity | round(1) }}'  
+
+  - platform: mqtt  
+    state_topic: "avon/basement/motion"  
+    name: "Basement Motion"  
+    value_template: '{{ value_json.motion }}'  
+
+  - platform: mqtt  
+    state_topic: "avon/basement/temperature"  
+    name: "Basement Temperature"  
+    unit_of_measurement: "°F"  
+    value_template: '{{ value_json.temperature | round(1) }}'  
+
+sensor 14:
+  - platform: mqtt
+    state_topic: "avon/sensornode4"
+    name: "Fermentation Temperature"
+    unit_of_measurement: "°C"
+    value_template: '{{ value_json.temperaturedallas | round(1) }}'
+
+sensor 12:
+  - platform: time_date
+    display_options:
+      - 'time'
+
+
+group: !include groups.yaml
+automation: !include automations.yaml
+customize: !include customize.yaml

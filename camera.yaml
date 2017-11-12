@@ -1,0 +1,27 @@
+# Garage Camera
+camera 2:
+  - platform: mjpeg
+    mjpeg_url: http://192.168.10.152/mjpeg.cgi
+    username: admin
+    password: talon#25
+    name: Garage
+
+# TV Room
+camera 4:
+  - platform : mjpeg
+    mjpeg_url: http://192.168.10.154/axis-cgi/mjpg/video.cgi?resolution=1024x768
+    name: Basement
+    username: root
+    password: talon#25
+
+# Living Room 2
+camera 5:
+  - platform: ffmpeg
+    name: Living Room 2
+    input: rtsp://192.168.10.155:554/ch0_0.h264
+
+# Mia's Room
+camera 6:
+  - platform: ffmpeg
+    name: Mia's Room
+    input: rtsp://admin:avon1292@192.168.10.111:554/profile5/media.smp

@@ -1,0 +1,23 @@
+- action:
+  - alias: notify
+    data:
+      message: The Garage Door is Open!
+    service: notify.notify
+  alias: Garage Door Open
+  id: '1497569931043'
+  trigger:
+  - entity_id: sensor.garage_door
+    from: closed
+    platform: state
+    to: open
+- action:
+  - alias: turn_on_salt
+    service: switch.turn_on
+    entity_id: switch.bedroom_outlet
+  alias: Turn on Salt
+  id: '1497577970226'
+  trigger:
+  - entity_id: sun.sun
+    from: below_horizon
+    platform: state
+    to: above_horizon
